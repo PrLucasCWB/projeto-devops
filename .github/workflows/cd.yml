@@ -1,0 +1,33 @@
+name: CD Simulado
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-simulado:
+    name: Simulando Deploy do Django
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v2
+
+    - name: Configurando Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Instalando dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Simulando Deploy
+      run: |
+        echo "========================================"
+        echo "🚀 Iniciando deploy simulado do Django"
+        echo "📦 Instalando aplicação..."
+        echo "🔧 Migrando banco de dados..."
+        echo "🎉 Aplicação implantada com sucesso!"
+        echo "========================================"
