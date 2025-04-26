@@ -1,0 +1,34 @@
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        python manage.py test
+
+    - name: Notify Discord on Success
+      if: success()
+      run: |
+        curl -H "Content-Type: application/json" \
+             -d "{\"content\": \"✅ Testes rodaram com sucesso!\"}" \
+             ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Notify Discord on Failure
+      if: failure()
+      run: |
+        curl -H "Content-Type: application/json" \
+             -d "{\"content\": \"❌ Os testes falharam!\"}" \
+             ${{ secrets.DISCORD_WEBHOOK_URL }}
